@@ -8,8 +8,9 @@ str\"([^"\\]|\\.)*\"
 
 
 %{
+    #include "parser.tab.h"
     #define YY_DECL extern "C" int yylex()
-    #include<string>
+    #include<string.h>
     #include<iostream>
     using namespace std;
     FILE *out ;
@@ -89,9 +90,11 @@ float|else|if|int|return|void|while {fprintf(out,"<%s>\n" ,yytext);}
 {digit}+{ID}+ {fprintf(out,"<%d,ERROR,\"%s\">\n",yylineno,yytext); return 0;}
 
 {ID}+ {
-        add_to_symbol_table(yytext, yylineno);
-        fprintf(out,"<ID,%d>\n",getId(yytext));
-        }
+    yylval.str = strdup(yytext); // Copia o valor do token para yylval.str
+    add_to_symbol_table(yytext, yylineno);
+    fprintf(out, "<ID,%d>\n", getId(yytext));
+    return ID;
+}
 {str}+ {fprintf(out, "<str,%s>\n", yytext);}
 . {fprintf(out,"<%d,ERROR,\"%s\">\n" ,yylineno ,yytext); return 0;}
 
