@@ -1,17 +1,41 @@
+
+## Descrição do Projeto
+
 # Trabalho 2 - Análise Sintática
 
 ## MATA61 - Compiladores
 
-### Introdução
+# Análise Sintática - MATA61
 
-Este trabalho consiste na criação de um analisador sintático utilizando Flex e Bison para uma linguagem de programação definida no Trabalho 1. A linguagem deve seguir as seguintes regras:
+## Instruções de Uso
 
-- Deve ser imperativa e compatível com o ASCII.
-- Deve ser possível inicializar variáveis do tipo numérico (inteiro ou flutuante) com tipagem estática, além de vetores do tipo numérico.
-- Deve ser possível fazer acessos e atribuições às variáveis inicializadas, incluindo os elementos individuais dos vetores. As atribuições devem ser expressões aritméticas que podem conter números pré-definidos e/ou variáveis e/ou funções.
-- Deve ser possível criar desvios condicionais simples e compostos, com a condição sendo feita com uma operação de comparação.
-- Deve ser possível criar um comando de repetição, com a condição para a repetição sendo feita com uma operação de comparação.
-- Deve ser possível criar funções que, a partir de um número definido de parâmetros (com tipagem estática), retornem um número inteiro, ponto flutuante ou não retornem nada. O tipo de retorno deve ser explicitado na definição da função. Após a criação da função, é possível chamá-la no código.
+Para compilar e executar o analisador sintático, siga os passos abaixo:
+
+1. Gere o analisador léxico com o Flex:
+   ```sh
+   flex scanner.l
+   ```
+
+2. Gere o analisador sintático com o Bison:
+   ```sh
+   bison -d parser.y
+   ```
+
+3. Compile os arquivos gerados e o arquivo principal:
+   ```sh
+   gcc lex.yy.c parser.tab.c -o analisador -lfl
+   ```
+
+4. Execute o analisador com um arquivo de entrada:
+   ```sh
+   ./analisador < arquivo_de_entrada.c
+   ```
+
+5. Quick Command
+    ```sh
+    flex scanner.l && bison -d parser.y && gcc lex.yy.c parser.tab.c -o analisador -lfl && ./analisador < main.c
+    ```
+
 
 ### Estrutura do Analisador Sintático
 

@@ -1169,13 +1169,13 @@ yyreduce:
     {
   case 2: /* program: function_definition  */
 #line 55 "parser.y"
-                        { root = (yyvsp[0].node); }
+                          { (yyval.node) = createASTNode("program", 1, (yyvsp[0].node)); root = (yyval.node); }
 #line 1174 "parser.tab.c"
     break;
 
   case 3: /* program: statement_list  */
 #line 56 "parser.y"
-                   { root = (yyvsp[0].node); }
+                     { (yyval.node) = createASTNode("program", 1, (yyvsp[0].node)); root = (yyval.node); }
 #line 1180 "parser.tab.c"
     break;
 
@@ -1229,13 +1229,13 @@ yyreduce:
 
   case 18: /* if_statement: IF '(' expression ')' statement  */
 #line 93 "parser.y"
-                                                            { (yyval.node) = createASTNode("if_statement", 2, (yyvsp[-2].node), (yyvsp[0].node)); }
+                                                            { (yyval.node) = createASTNode("if_statement", 2, createASTNode("condition", 1, (yyvsp[-2].node)), (yyvsp[0].node)); }
 #line 1234 "parser.tab.c"
     break;
 
   case 19: /* if_statement: IF '(' expression ')' statement ELSE statement  */
 #line 94 "parser.y"
-                                                     { (yyval.node) = createASTNode("if_statement", 3, (yyvsp[-4].node), (yyvsp[-2].node), (yyvsp[0].node)); }
+                                                     { (yyval.node) = createASTNode("if_statement", 3, createASTNode("condition", 1, (yyvsp[-4].node)), (yyvsp[-2].node), (yyvsp[0].node)); }
 #line 1240 "parser.tab.c"
     break;
 

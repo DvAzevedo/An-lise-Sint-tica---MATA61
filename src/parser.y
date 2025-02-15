@@ -52,9 +52,9 @@ void yyerror(const char *s);
 %%
 
 program:
-    function_definition { root = $1; }
-  | statement_list { root = $1; }
-  ;
+      function_definition { $$ = createASTNode("program", 1, $1); root = $$; }
+    | statement_list { $$ = createASTNode("program", 1, $1); root = $$; }
+    ;
 
 function_definition:
     type ID '(' ')' compound_statement
@@ -90,8 +90,8 @@ attribution:
     ;
 
 if_statement:
-      IF '(' expression ')' statement %prec LOWER_THAN_ELSE { $$ = createASTNode("if_statement", 2, $3, $5); }
-    | IF '(' expression ')' statement ELSE statement { $$ = createASTNode("if_statement", 3, $3, $5, $7); }
+      IF '(' expression ')' statement %prec LOWER_THAN_ELSE { $$ = createASTNode("if_statement", 2, createASTNode("condition", 1, $3), $5); }
+    | IF '(' expression ')' statement ELSE statement { $$ = createASTNode("if_statement", 3, createASTNode("condition", 1, $3), $5, $7); }
     ;
 
 while_statement:
