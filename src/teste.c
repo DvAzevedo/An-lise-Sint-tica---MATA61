@@ -1,6 +1,4 @@
-#include <stdio.h>
-
-int main() {
+{
     int x;
     x = 5;
 
@@ -9,6 +7,5 @@ int main() {
     } else {
         x = 0;
     }
-
     return 0;
 }

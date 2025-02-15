@@ -35,7 +35,7 @@ as mudanças na documentação.
 Exemplo:
 O seguinte código:
 
-main.c
+teste.c
 
 int x;
 x = 5;
