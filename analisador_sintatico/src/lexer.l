@@ -8,12 +8,11 @@ str\"([^"\\]|\\.)*\"
 
 
 %{
-    #define YY_DECL extern "C" int yylex()
-    #include<string>
-    #include<iostream>
-    using namespace std;
+    // Modified YY_DECL for C compilation
+    #define YY_DECL int yylex()
+    #include <string.h> // Changed from <string> to <string.h>
     FILE *out ;
-	int linha;
+    int linha;
 
     typedef struct {
         char name[50];
@@ -24,7 +23,7 @@ str\"([^"\\]|\\.)*\"
     Symbol symbol_table[100];
     int symbol_count = 0;
 
-   void add_to_symbol_table(const char *name, int line) {
+    void add_to_symbol_table(const char *name, int line) {
         if (symbol_count >= 100) {
             fprintf(stderr, "Erro: Tabela de símbolos cheia.\n");
             return;
@@ -37,7 +36,6 @@ str\"([^"\\]|\\.)*\"
         strcpy(symbol_table[symbol_count].name, name);
         symbol_table[symbol_count].line = line;
         symbol_table[symbol_count].id = symbol_count;
-
         symbol_count++;
     }
 
@@ -58,7 +56,7 @@ str\"([^"\\]|\\.)*\"
         }
     }
 %}
-%option yylineno
+%option yylineno noyywrap
 %x COMMENT
 
 %%
@@ -97,26 +95,4 @@ float|else|if|int|return|void|while {fprintf(out,"<%s>\n" ,yytext);}
 
 %%
 
-int yywrap();
-
-int main(int argc, char *argv[]) {
-    FILE *arquivo = fopen(argv[1], "r");
-    if (!arquivo) {
-        cout << "Arquivo inexistente" << endl;
-        return -1;
-    }
-    yyin = arquivo;
-    out = fopen(argv[2], "w");
-    if (!out) {
-        cout << "Erro ao abrir arquivo de saída" << endl;
-        return -1;
-    }
-    yylex();
-    print_symbol_table();
-    return 0;
-}
-
-
-int yywrap(){
-    return 1;
-}
+/* Removed main() and auxiliary definitions (e.g. yywrap) to avoid multiple definitions */
