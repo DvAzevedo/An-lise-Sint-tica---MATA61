@@ -839,7 +839,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 73 "scanner.l"
-{ /* Ignora retorno de carro */ }  // <-- Adicionado
+{ /* Ignora retorno de carro */ }
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */

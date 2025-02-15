@@ -28,7 +28,9 @@ void yyerror(const char *s);
 
 /* Tokens retornados pelo lexer */
 %token <str> ID
-%token INT_LITERAL FLOAT_LITERAL STR
+%token <intval> INT_LITERAL
+%token <floatval> FLOAT_LITERAL
+%token STR
 %token INT FLOAT IF ELSE WHILE RETURN VOID
 %token LE GE EQ NE       /* <-- Adicionados */
 
@@ -36,10 +38,10 @@ void yyerror(const char *s);
 %type <node> program statement_list statement declaration attribution if_statement while_statement compound_statement jump_statement expression
 %type <str> type
 
-
 /* Precedência dos operadores */
 %left '+' '-'
 %left '*' '/'
+%left LE GE EQ NE '<' '>'
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
 
@@ -110,9 +112,17 @@ expression:
     | expression '<' expression { $$ = createASTNode("lt", 2, $1, $3); }
     | expression '>' expression { $$ = createASTNode("gt", 2, $1, $3); }
     | '(' expression ')' { $$ = $2; }
-    | ID { $$ = createASTNode("ID", 0); }
-    | INT_LITERAL { $$ = createASTNode("INT_LITERAL", 0); }
-    | FLOAT_LITERAL { $$ = createASTNode("FLOAT_LITERAL", 0); }
+    | ID { $$ = createASTNode("ID", 1, createASTNode($1, 0)); }
+    | INT_LITERAL { 
+          char buffer[50];
+          snprintf(buffer, sizeof(buffer), "%d", $1);
+          $$ = createASTNode("INT_LITERAL", 1, createASTNode(buffer, 0)); 
+      }
+    | FLOAT_LITERAL { 
+          char buffer[50];
+          snprintf(buffer, sizeof(buffer), "%f", $1);
+          $$ = createASTNode("FLOAT_LITERAL", 1, createASTNode(buffer, 0)); 
+      }
     ;
 
 %%

@@ -70,7 +70,7 @@ str        \"([^"\\]|\\.)*\"
 
 %%
 
-{CR}                    { /* Ignora retorno de carro */ }  // <-- Adicionado
+{CR}                    { /* Ignora retorno de carro */ }
 {quebra}                { /* Atualiza a linha se necessário */ }
 "//".*                  { /* Ignora comentários de linha única */ }
 
