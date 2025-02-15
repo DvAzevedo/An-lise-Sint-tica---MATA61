@@ -36,6 +36,7 @@ void yyerror(const char *s);
 
 /* Declaração dos tipos dos não-terminais que terão um ASTNode* */
 %type <node> program statement_list statement declaration attribution if_statement while_statement compound_statement jump_statement expression
+%type <node> function_definition
 %type <str> type
 
 /* Precedência dos operadores */
@@ -51,8 +52,14 @@ void yyerror(const char *s);
 %%
 
 program:
-    statement_list { root = $1; }
-    ;
+    function_definition { root = $1; }
+  | statement_list { root = $1; }
+  ;
+
+function_definition:
+    type ID '(' ')' compound_statement
+      { $$ = createASTNode("function_definition", 3, createASTNode($1, 0), createASTNode($2, 0), $5); }
+  ;
 
 statement_list:
       statement_list statement { $$ = createASTNode("statement_list", 2, $1, $2); }
@@ -165,9 +172,19 @@ void yyerror(const char* s) {
     fprintf(stderr, "Erro: %s\n", s);
 }
 
-/* Remova ou comente a função main para evitar duplicatas */
-// int main() {
-//     yyparse();
-//     printAST(root, 0);
-//     return 0;
-// }
+extern FILE *yyin;
+int yyparse();
+
+int main(int argc, char **argv) {
+    if (argc > 1) {
+        FILE *file = fopen(argv[1], "r");
+        if (!file) {
+            fprintf(stderr, "Could not open %s\n", argv[1]);
+            return 1;
+        }
+        yyin = file;
+    }
+    yyparse();
+    printAST(root, 0);
+    return 0;
+}
